@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Processor</title>
+    <style>
+        #dropzone {
+            border: 2px dashed #ccc;
+            padding: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        img { max-width: 100%; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Drag & Drop Image</h1>
+    <div id="dropzone">Drop your image here</div>
+    <img id="result" src="" alt="Processed Image" />
+
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const resultImg = document.getElementById('result');
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.style.background = '#eef';
+        });
+
+        dropzone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            dropzone.style.background = '';
+
+            const file = e.dataTransfer.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            resultImg.src = data.output;
+        });
+    </script>
+</body>
+</html>
