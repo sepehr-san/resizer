@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, send_from_directory
 import os
-from your_script import process_image  # your image processing function
+from convertor import convert_to_png  # your image processing function
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'static/output'
@@ -22,7 +22,7 @@ def upload():
     file.save(input_path)
 
     # Call your processing function
-    process_image(input_path, output_path)
+    convert_to_png(input_path, output_path)
 
     return {'output': f'/static/output/output_{filename}'}
 
